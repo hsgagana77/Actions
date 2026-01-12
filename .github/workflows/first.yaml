@@ -1,34 +1,29 @@
-name: My First Workflow
+name: Cowsay ASCII Art Workflow
 
 on: push
 
 jobs:
-  first_job:
+  ascii_art_job:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Welcome Message
-        run: echo "My first GitHub Actions Job"
+      - name: Install cowsay
+        run: sudo apt-get update && sudo apt-get install -y cowsay
 
-      - name: Show current directory
-        run: pwd
+      - name: Generate ASCII art
+        run: cowsay "Hello from GitHub Actions!"
 
-      - name: List files
-        run: ls -la
+      - name: Save ASCII art to file
+        run: cowsay "CI/CD with Cowsay 🐄" > cowsay_art.txt
 
-      - name: Create a file
-        run: |
-          touch new_file1
-          echo "This file was created by GitHub Actions" > new_file1
+      - name: Display saved file
+        run: cat cowsay_art.txt
 
-      - name: Verify file creation
-        run: ls -la new_file1
-
-      - name: Upload file as artifact
+      - name: Upload ASCII art as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: generated-file
-          path: new_file1
+          name: cowsay-ascii-art
+          path: cowsay_art.txt
