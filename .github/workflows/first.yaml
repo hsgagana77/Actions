@@ -3,19 +3,32 @@ name: My First Workflow
 on: push
 
 jobs:
-    first_job:
-        runs-on: ubuntu-latest
-        steps:
-        - name: Welcome Message
-          run: echo "My first GitHub Actions Job"
+  first_job:
+    runs-on: ubuntu-latest
 
-        - name: List files
-          run: ls
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-        - name: Read file
-          run: cat README.md
+      - name: Welcome Message
+        run: echo "My first GitHub Actions Job"
 
-        - name: Create a file
-          run: touch new_file
-          
+      - name: Show current directory
+        run: pwd
 
+      - name: List files
+        run: ls -la
+
+      - name: Create a file
+        run: |
+          touch new_file1
+          echo "This file was created by GitHub Actions" > new_file1
+
+      - name: Verify file creation
+        run: ls -la new_file1
+
+      - name: Upload file as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-file
+          path: new_file1
